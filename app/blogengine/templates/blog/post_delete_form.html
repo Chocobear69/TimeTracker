@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    Delete Post - {{ tag.title|title }} - {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+    <form action="{% url 'post_delete_url' slug=post.slug %}" method="POST">
+        {% csrf_token %}
+        <h3>
+            Are you sure you want to delete {{ post.title|title }}
+        </h3>
+        <button type="submit" class="btn btn-denger">Delete</button>
+        <a href="{% url 'tag_detail_url' slug=tag.slug %}">Cancel</a>
+    </form>
+{% endblock %}
