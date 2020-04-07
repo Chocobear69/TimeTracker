@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from .views import redirect_to_main
+
 urlpatterns = [
+    path('', redirect_to_main),
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls'))
 ]
