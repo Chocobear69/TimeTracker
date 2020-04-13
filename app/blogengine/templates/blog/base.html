@@ -34,8 +34,8 @@
 					<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
 				</li>
 			</ul>
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+			<form class="form-inline my-2 my-lg-0" action="{% url 'posts_list_url' %}">
+				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 			</form>
 		</div>
@@ -46,6 +46,30 @@
 				{% block content %}
 					NO CONTENT
 				{% endblock %}
+				<nav aria-label="...">
+					<ul class="pagination">
+						{% if is_paginated %}
+							<li class="page-item {% if not prev_page %} disabled {% endif %}">
+								<a class="page-link" href="{{prev_page}}" tabindex="-1" aria-disabled="true">Previous</a>
+							</li>
+							
+							{% for n in page.paginator.page_range %}
+								{% if page.number == n  %}
+									<li class="page-item active" aria-current="page">
+										<a class="page-link" href="#">{{ n }} <span class="sr-only">(current)</span></a>
+									</li>
+								{% elif n > page.number|add:-3 and n < page.number|add:3 %}
+									<li class="page-item">
+										<a class="page-link" href="?page={{ n }}">{{ n }}</a>
+									</li>
+								{% endif %}
+							{% endfor %}
+							<li class="page-item {% if not next_page %} disabled {% endif %}">
+								<a class="page-link" href="{{next_page}}">Next</a>
+							</li>
+						{% endif %}
+					</ul>
+				</nav>
 			</div>
 		</div> 
 	</div>
@@ -62,8 +86,8 @@
 					<a class="dropdown-item" href="{% url 'tag_create_url' %}">Tag</a>
 				</div>
 			</div>
-			<a href="{{ admin_object.get_update_url }}" class="btn btn-light edit" style="{% if detail %} display: block; {% endif %}">Edit</a>
-			<a href="{{ admin_object.get_delete_url }}" class="btn btn-danger delete" style="{% if detail %} display: block; {% endif %}">Delete</a>
+			<a href="{{ admin_object.get_update_url }}" class="btn btn-light edit" style="{% if detail %} display:block; {% endif %}">Edit</a>
+			<a href="{{ admin_object.get_delete_url }}" class="btn btn-danger delete" style="{% if detail %} display:block; {% endif %}">Delete</a>
 		</div>
 	{% endif %}
 
